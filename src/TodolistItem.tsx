@@ -1,28 +1,32 @@
 
-    export const TodolistItem = (props: any) => {
-        return (
+type Props = {
+    title: string
+}
+
+export const TodolistItem = (props: Props) => {
+    return (
+        <div>
+            <h3>{props.title}</h3>
             <div>
-                <h3>{props.title}</h3>
-                <div>
-                    <input/>
-                    <button>+</button>
-                </div>
-                <ul>
-                    <li>
-                        <input type="checkbox" checked={true}/> <span>HTML&CSS</span>
-                    </li>
-                    <li>
-                        <input type="checkbox" checked={true}/> <span>JS</span>
-                    </li>
-                    <li>
-                        <input type="checkbox" checked={false}/> <span>React</span>
-                    </li>
-                </ul>
-                <div>
-                    <button>All</button>
-                    <button>Active</button>
-                    <button>Completed</button>
-                </div>
+                <input/>
+                <button>+</button>
             </div>
-        )
-    }
+            <ul>
+                <li>
+                    <input type="checkbox" checked={true}/> <span>HTML&CSS</span>
+                </li>
+                <li>
+                    <input type="checkbox" checked={true}/> <span>JS</span>
+                </li>
+                <li>
+                    <input type="checkbox" checked={false}/> <span>React</span>
+                </li>
+            </ul>
+            <div>
+                <button>All</button>
+                <button>Active</button>
+                <button>Completed</button>
+            </div>
+        </div>
+    )
+}
