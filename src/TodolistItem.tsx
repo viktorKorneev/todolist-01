@@ -1,4 +1,4 @@
-export const TodolistItem = () => {
+
     export const TodolistItem = () => {
         return (
             <div>
@@ -26,4 +26,3 @@ export const TodolistItem = () => {
             </div>
         )
     }
-}
