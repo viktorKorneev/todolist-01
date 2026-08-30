@@ -23,7 +23,7 @@ export const App = () => {
         {id: v1(), title: "RTK query", isDone: false},
     ])
 
-    const deleteTask = (taskId: number) => {
+    const deleteTask = (taskId: string) => {
         const filteredTasks = tasks.filter(task => {
             return task.id !== taskId
         })
@@ -42,6 +42,12 @@ export const App = () => {
         filteredTasks = tasks.filter(task => task.isDone)
     }
 
+    const createTask = () => {
+        const newTask = { id: v1(), title: "New task", isDone: false }
+        const newTasks = [newTask, ...tasks]
+        setTasks(newTasks)
+    }
+
 
     return (
         <div className="app">
@@ -50,6 +56,7 @@ export const App = () => {
                           date="27.01.2027"
                           deleteTask={deleteTask}
                           changeFilter={changeFilter}
+                          createTask={createTask}
             />
         </div>
     )

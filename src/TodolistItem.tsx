@@ -1,21 +1,23 @@
 import {FilterValues, Task} from "./App.tsx";
 import {Button} from "./Button.tsx";
+// import {v} from "vitest/dist/chunks/reporters.D7Jzd9GS";
 
 type Props = {
     title: string
     tasks: Task[]
     date?: string
-    deleteTask: (taskId: number) => void
+    deleteTask: (taskId: string) => void
     changeFilter: (filter: FilterValues) => void
+    createTask: () => void
 }
 
-export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter}: Props) => {
+export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, createTask}: Props) => {
     return (
         <div>
             <h3>{title}</h3>
             <div>
                 <input/>
-                <button>+</button>
+                <Button title={"+"} onClick={createTask} />
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
