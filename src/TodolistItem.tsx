@@ -1,6 +1,7 @@
 import {FilterValues, Task} from "./App.tsx";
 import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {n} from "vitest/dist/chunks/reporters.D7Jzd9GS";
 
 type Props = {
     title: string
@@ -16,17 +17,21 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, crea
     // const inputRef = useRef<HTMLInputElement>(null); ❗-- useRef() -- ❗
 
     const [taskTitle, setTaskTitle] = useState("")
+    const [error, setError] = useState<string | null>(null)
 
     const createTaskHandler = () => {
         const trimmedTitle = taskTitle.trim()
         if (taskTitle !== "") {
             createTask(trimmedTitle)
             setTaskTitle("")
+        } else {
+            setError("Title is required")
         }
     }
 
     const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTaskTitle(event.currentTarget.value)
+        setError(null)
     }
 
     const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -40,10 +45,12 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, crea
         <div>
             <h3>{title}</h3>
             <div>
-                <input value={taskTitle}
+                <input className={error ? "error" : ""}
+                       value={taskTitle}
                        onChange={changeTaskTitleHandler}
                        onKeyDown={createTaskOnEnterHandler}/>
                 <Button title={"+"} onClick={createTaskHandler}/>
+                {error && <div className={"error-message"}>{error}</div>}
 
                 {/*/!*<input ref={inputRef}/>*!/---------------------*/}
                 {/*/!*<Button title={"+"} onClick={() => {*!/      --*/}
