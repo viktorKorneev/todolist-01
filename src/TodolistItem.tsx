@@ -1,4 +1,4 @@
-import {Task} from "./App.tsx";
+import {FilterValues, Task} from "./App.tsx";
 import {Button} from "./Button.tsx";
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
     tasks: Task[]
     date?: string
     deleteTask: (taskId: number) => void
-    changeFilter: (filter: Filter) => void
+    changeFilter: (filter: FilterValues) => void
 }
 
 export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter}: Props) => {
