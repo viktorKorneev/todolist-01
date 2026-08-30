@@ -1,5 +1,6 @@
 import {FilterValues, Task} from "./App.tsx";
 import {Button} from "./Button.tsx";
+import {useRef, useState} from "react";
 // import {v} from "vitest/dist/chunks/reporters.D7Jzd9GS";
 
 type Props = {
@@ -8,16 +9,34 @@ type Props = {
     date?: string
     deleteTask: (taskId: string) => void
     changeFilter: (filter: FilterValues) => void
-    createTask: () => void
+    createTask: (title: string) => void
 }
 
 export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, createTask}: Props) => {
+    // const inputRef = useRef<HTMLInputElement>(null); ❗-- useRef() -- ❗
+
+    const [taskTitle, setTaskTitle] = useState("")
+
+    const createTaskHandler = () => {
+        createTask(taskTitle)
+        setTaskTitle("")
+    }
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button title={"+"} onClick={createTask} />
+                <input value={taskTitle} onChange={event => setTaskTitle(event.currentTarget.value)}/>
+                <Button title={"+"} onClick={createTaskHandler}/>
+
+                {/*/!*<input ref={inputRef}/>*!/---------------------*/}
+                {/*/!*<Button title={"+"} onClick={() => {*!/      --*/}
+                {/*/!*    if (inputRef.current) {*!/               --*/}
+                {/*/!*        createTask(inputRef.current.value)*!/-------❗ useRef()*/}
+                {/*/!*        inputRef.current.value = ""*!/   ------*/}
+                {/*/!*    }*!/                                   ----*/}
+                {/*/!*}}/>*!/----------------------------------------*/}
+
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
@@ -28,7 +47,7 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, crea
                             <li key={task.id}>
                                 <input type="checkbox" checked={task.isDone}/>
                                 <span>{task.title}</span>
-                                <Button title={"x"} onClick={ () => deleteTask(task.id) } />
+                                <Button title={"x"} onClick={() => deleteTask(task.id)}/>
                             </li>
                         )
                     })}

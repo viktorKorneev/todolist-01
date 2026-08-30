@@ -23,12 +23,16 @@ export const App = () => {
         {id: v1(), title: "RTK query", isDone: false},
     ])
 
+    // ------------------------------❗Delete-Task ---------------------------
+
     const deleteTask = (taskId: string) => {
         const filteredTasks = tasks.filter(task => {
             return task.id !== taskId
         })
         setTasks(filteredTasks)
     }
+
+    // ------------------------------❗Change-Filter ---------------------------
 
     const changeFilter = (filter: FilterValues) => {
         setFilter(filter)
@@ -42,8 +46,10 @@ export const App = () => {
         filteredTasks = tasks.filter(task => task.isDone)
     }
 
-    const createTask = () => {
-        const newTask = { id: v1(), title: "New task", isDone: false }
+    // -------------------------------❗Create-Task ------------------------------------------
+
+    const createTask = (title: string) => {
+        const newTask = { id: v1(), title, isDone: false }
         const newTasks = [newTask, ...tasks]
         setTasks(newTasks)
     }
