@@ -27,7 +27,9 @@ export const App = () => {
     ])
 
     // ---------------------- Текущий фильтр
-    const [filter, setFilter] = useState<FilterValues>("all")
+    // Значения фильтра каждого тудулиста теперь хранятся в самих объектах, поэтому нужно удалить state для значения фильтра:
+    // const [filter, setFilter] = useState<FilterValues>("all")
+    //-------------------------------------------------------------
 
     // ---------------------- Список задач
     const [tasks, setTasks] = useState<Task[]>([
@@ -50,17 +52,10 @@ export const App = () => {
 
     // ------------------------------❗Change-Filter ---------------------------
 
-    const changeFilter = (filter: FilterValues) => {
-        setFilter(filter)
+    const changeFilter = (todolistId: string, filter: FilterValues) => {
+        setTodolist(todolists.map(todolist => todolist.id === todolistId ? { ...todolist, filter } : todolist))
     }
 
-    let filteredTasks = tasks
-    if (filter === "active") {
-        filteredTasks = tasks.filter(task => !task.isDone)
-    }
-    if (filter === "completed") {
-        filteredTasks = tasks.filter(task => task.isDone)
-    }
 
     // -------------------------------❗Create-Task ------------------------------------------
 
@@ -88,6 +83,13 @@ export const App = () => {
         <div className="app">
             {/* ----------------------❗ Рендерим каждый тудулист */}
             {todolists.map(todolist => {
+                let filteredTasks = tasks
+                if (todolist.filter === "active") {
+                    filteredTasks = tasks.filter(task => !task.isDone)
+                }
+                if (todolist.filter === "completed") {
+                    filteredTasks = tasks.filter(task => task.isDone)
+                }
                 return (
                     <TodolistItem key={todolist.id}
                                   todolist={todolist}
