@@ -3,18 +3,28 @@ import {TodolistItem} from "./TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 
-// ---------------------- Тип задачи
+// ------------------------- Тип задачи
 export type Task = {
     id: string
     title: string
     isDone: boolean
 }
-// -------------------- Тип тудулиста
+// ------------------------- Тип тудулиста
 export type Todolist = {
     id: string
     title: string
     filter: FilterValues
 }
+// ------------------------- Тип для state
+export type TasksState = Record<string, Task[]>
+//❗ Record<string, Task[]> — объект-словарь, где ключ — строковый id тудулиста,
+// а значение — массив его задач (Task[])
+// ----------------
+
+// export type TasksState = {
+//     [key: string]: Task[]
+// }
+
 // ------------------------- Тип фильтра
 export type FilterValues = "all" | "active" | "completed"
 
@@ -36,7 +46,7 @@ export const App = () => {
     //-------------------------------------------------------------
 
     // ---------------------- Список задач
-    const [tasks, setTasks] = useState({
+    const [tasks, setTasks] = useState<TasksState>({
             [todolistId1]: [
                 {id: v1(), title: "HTML&CSS", isDone: true},
                 {id: v1(), title: "JS", isDone: true},
