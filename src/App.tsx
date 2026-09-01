@@ -3,17 +3,33 @@ import {TodolistItem} from "./TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 
+// ---------------------- Тип задачи
 export type Task = {
     id: string
     title: string
     isDone: boolean
 }
-
+// -------------------- Тип тудулиста
+export type Todolist = {
+    id: string
+    title: string
+    filter: FilterValues
+}
+// ------------------------- Тип фильтра
 export type FilterValues = "all" | "active" | "completed"
 
+
 export const App = () => {
+    // ---------------------- Список тудулистов
+    const [todolists, setTodolist] = useState<Todolist[]>([
+        {id: v1(), title: "What to learn", filter: "all"},
+        {id: v1(), title: "What to buy", filter: "all"}
+    ])
+
+    // ---------------------- Текущий фильтр
     const [filter, setFilter] = useState<FilterValues>("all")
 
+    // ---------------------- Список задач
     const [tasks, setTasks] = useState<Task[]>([
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
@@ -70,15 +86,19 @@ export const App = () => {
 
     return (
         <div className="app">
-            <TodolistItem title="What to learn"
-                          tasks={filteredTasks}
-                          date="27.01.2027"
-                          deleteTask={deleteTask}
-                          changeFilter={changeFilter}
-                          createTask={createTask}
-                          changeTaskStatus={changeTaskStatus}
-                          filter={filter}
-            />
+            {/* ----------------------❗ Рендерим каждый тудулист */}
+            {todolists.map(todolist => {
+                return (
+                    <TodolistItem key={todolist.id}
+                                  todolist={todolist}
+                                  tasks={filteredTasks}
+                                  date="27.01.2027"
+                                  deleteTask={deleteTask}
+                                  changeFilter={changeFilter}
+                                  createTask={createTask}
+                                  changeTaskStatus={changeTaskStatus}/>
+                )
+            })}
         </div>
     )
 }
