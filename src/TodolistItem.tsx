@@ -6,14 +6,17 @@ type Props = {
     todolist: Todolist;
     tasks: Task[]
     date?: string
-    deleteTask: (taskId: string) => void
+    deleteTask: (todolistId:string, taskId: string) => void
     changeFilter: (todolistId: string, filter: FilterValues) => void
-    createTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    createTask: (todolistId:string, title: string) => void
+    changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
 }
 
 export const TodolistItem = (props: Props) => {
     const {
+        // Деструктурируем только поля id, title и filter из props.todolist.
+        // Переменная todolist здесь НЕ создаётся, поэтому используем id,
+        // а обратиться как todolist.id нельзя — такой переменной нет.
         todolist: {id, title, filter},
         tasks,
         date,
@@ -31,7 +34,7 @@ export const TodolistItem = (props: Props) => {
     const createTaskHandler = () => {
         const trimmedTitle = taskTitle.trim()
         if (taskTitle !== "") {
-            createTask(trimmedTitle)
+            createTask(id, trimmedTitle)
             setTaskTitle("")
         } else {
             setError("Title is required")
@@ -80,12 +83,12 @@ export const TodolistItem = (props: Props) => {
                 <ul>
                     {tasks.map(task => {
                         const deleteTaskHandler = () => {
-                            deleteTask(task.id)
+                            deleteTask(id, task.id)
                         }
 
                         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             const newStatusValue = e.currentTarget.checked
-                            changeTaskStatus(task.id, newStatusValue)
+                            changeTaskStatus(id, task.id, newStatusValue)
                         }
 
                         return (
