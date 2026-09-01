@@ -71,6 +71,32 @@ export const App = () => {
         setTasks(newTasks)
     }
 
+    // ------------------------------❗Delete-Todolist ---------------------------
+
+    // const deleteTodolist = (todolistId: string) => {
+    //     setTodolist(todolists.filter((todolist) => todolist.id !== todolistId))
+    //      // Удаляем таски нужного тудулиста из стейта тасок:
+    //     delete tasks[todolistId]
+    //      // Устанавливаем в state копию объекта:
+    //     setTasks({ ...tasks })
+    // }
+    // -------------
+
+    const deleteTodolist = (todolistId: string) => {
+        // Удаляем тудулист из массива тудулистов по его id
+        setTodolist(todolists.filter(todolist => todolist.id !== todolistId))
+
+        // Деструктурируем объект tasks:
+        // Извлекаем свойство с ключом todolistId (оно нам не нужно),
+        // а остальные свойства собираем в новый объект restTasks.
+        // Таким образом мы удаляем задачи только этого тудулиста.
+        const {[todolistId]: _, ...restTasks} = tasks
+
+        // Обновляем state задач новым объектом без удалённого ключа
+        setTasks(restTasks)
+    }
+
+
     // ------------------------------❗Change-Filter ---------------------------
 
     const changeFilter = (todolistId: string, filter: FilterValues) => {
@@ -97,7 +123,7 @@ export const App = () => {
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
         const newTasks = {
             ...tasks,
-            [todolistId]: tasks[todolistId].map(task => task.id === taskId ? { ...task, isDone } : task),
+            [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task),
         }
         setTasks(newTasks)
     }
@@ -133,7 +159,8 @@ export const App = () => {
                                   deleteTask={deleteTask}
                                   changeFilter={changeFilter}
                                   createTask={createTask}
-                                  changeTaskStatus={changeTaskStatus}/>
+                                  changeTaskStatus={changeTaskStatus}
+                                  deleteTodolist={deleteTodolist}/>
                 )
             })}
         </div>

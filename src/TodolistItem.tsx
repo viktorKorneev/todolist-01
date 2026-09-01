@@ -10,6 +10,7 @@ type Props = {
     changeFilter: (todolistId: string, filter: FilterValues) => void
     createTask: (todolistId:string, title: string) => void
     changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
+    deleteTodolist: (todolistId: string) => void
 }
 
 export const TodolistItem = (props: Props) => {
@@ -23,7 +24,8 @@ export const TodolistItem = (props: Props) => {
         deleteTask,
         changeFilter,
         createTask,
-        changeTaskStatus
+        changeTaskStatus,
+        deleteTodolist
     } = props
 
     // const inputRef = useRef<HTMLInputElement>(null); ❗-- useRef() -- ❗
@@ -56,10 +58,17 @@ export const TodolistItem = (props: Props) => {
         changeFilter(id, filter)
     }
 
+    const deleteTodolistHandler = () => {
+        deleteTodolist(id)
+    }
+
 
     return (
         <div>
-            <h3>{title}</h3>
+            <div className={"container"}>
+                <h3>{title}</h3>
+                <Button title={"x"} onClick={deleteTodolistHandler} />
+            </div>
             <div>
                 <input className={error ? "error" : ""}
                        value={taskTitle}
