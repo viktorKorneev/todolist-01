@@ -1,6 +1,7 @@
 import {FilterValues, Task, Todolist} from "./App.tsx";
 import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {CreateItemForm} from "./CreateItemForm.tsx";
 
 type Props = {
     todolist: Todolist;
@@ -28,31 +29,11 @@ export const TodolistItem = (props: Props) => {
         deleteTodolist
     } = props
 
-    // const inputRef = useRef<HTMLInputElement>(null); ❗-- useRef() -- ❗
 
-    const [taskTitle, setTaskTitle] = useState("")
-    const [error, setError] = useState<string | null>(null)
-
-    const createTaskHandler = () => {
-        const trimmedTitle = taskTitle.trim()
-        if (taskTitle !== "") {
-            createTask(id, trimmedTitle)
-            setTaskTitle("")
-        } else {
-            setError("Title is required")
-        }
+    const createTaskHandler = (title: string) => {
+        createTask(id, title)
     }
 
-    const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(event.currentTarget.value)
-        setError(null)
-    }
-
-    const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            createTaskHandler()
-        }
-    }
 
     const changeFilterHandler = (filter: FilterValues) => {
         changeFilter(id, filter)
@@ -69,23 +50,7 @@ export const TodolistItem = (props: Props) => {
                 <h3>{title}</h3>
                 <Button title={"x"} onClick={deleteTodolistHandler} />
             </div>
-            <div>
-                <input className={error ? "error" : ""}
-                       value={taskTitle}
-                       onChange={changeTaskTitleHandler}
-                       onKeyDown={createTaskOnEnterHandler}/>
-                <Button title={"+"} onClick={createTaskHandler}/>
-                {error && <div className={"error-message"}>{error}</div>}
-
-                {/*/!*<input ref={inputRef}/>*!/---------------------*/}
-                {/*/!*<Button title={"+"} onClick={() => {*!/      --*/}
-                {/*/!*    if (inputRef.current) {*!/               --*/}
-                {/*/!*        createTask(inputRef.current.value)*!/-------❗ useRef()*/}
-                {/*/!*        inputRef.current.value = ""*!/   ------*/}
-                {/*/!*    }*!/                                   ----*/}
-                {/*/!*}}/>*!/----------------------------------------*/}
-
-            </div>
+            <CreateItemForm onCreateItem={createTaskHandler} />
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (

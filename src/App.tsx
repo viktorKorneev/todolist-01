@@ -35,6 +35,7 @@ export const App = () => {
     const todolistId2 = v1()
 
     // ---------------------- Список тудулистов
+    // Храним массив тудулистов, каждый со своим id, названием и фильтром
     const [todolists, setTodolist] = useState<Todolist[]>([
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
@@ -46,6 +47,7 @@ export const App = () => {
     //-------------------------------------------------------------
 
     // ---------------------- Список задач
+    // tasks — объект, где ключ = id тудулиста, значение = массив его задач
     const [tasks, setTasks] = useState<TasksState>({
             [todolistId1]: [
                 {id: v1(), title: "HTML&CSS", isDone: true},
@@ -151,7 +153,8 @@ export const App = () => {
 
     return (
         <div className="app">
-            {/* ----------------------❗ Рендерим каждый тудулист */}
+            {/* ----------------------❗ Рендерим каждый тудулист
+            Берём задачи по id тудулиста, применяем фильтр и передаём в компонент */}
             {todolists.map(todolist => {
                 const todolistTasks = tasks[todolist.id]
                 let filteredTasks = todolistTasks
