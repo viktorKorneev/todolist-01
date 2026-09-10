@@ -119,7 +119,7 @@ export const App = () => {
     // -------------------------------❗Create-TodoList ------------------------------------------
     const createTodolist = (title: string) => {
         const todolistId = v1()
-        const newTodolist:Todolist = { id:todolistId, title: title, filter: "all" }
+        const newTodolist: Todolist = {id: todolistId, title: title, filter: "all"}
         setTodolist([newTodolist, ...todolists])
         setTasks({...tasks, [todolistId]: []})
     }
@@ -159,6 +159,13 @@ export const App = () => {
     //     setTasks([...tasks])
     // }
 
+    // -------------------------------❗Change-Task-Title -------------------------------------
+    const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(task => taskId === task.id ? {...task, title} : task),
+        })
+    }
 
     return (
         <div className="app">
@@ -176,15 +183,16 @@ export const App = () => {
                     filteredTasks = todolistTasks.filter(task => task.isDone)
                 }
                 return (
-                        <TodolistItem key={todolist.id}
-                                      todolist={todolist}
-                                      tasks={filteredTasks}
-                                      date="27.01.2027"
-                                      deleteTask={deleteTask}
-                                      changeFilter={changeFilter}
-                                      createTask={createTask}
-                                      changeTaskStatus={changeTaskStatus}
-                                      deleteTodolist={deleteTodolist}/>
+                    <TodolistItem key={todolist.id}
+                                  todolist={todolist}
+                                  tasks={filteredTasks}
+                                  date="27.01.2027"
+                                  deleteTask={deleteTask}
+                                  changeFilter={changeFilter}
+                                  createTask={createTask}
+                                  changeTaskStatus={changeTaskStatus}
+                                  deleteTodolist={deleteTodolist}
+                                  changeTaskTitle={changeTaskTitle}/>
                 )
             })}
         </div>

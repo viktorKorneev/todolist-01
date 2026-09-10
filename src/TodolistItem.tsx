@@ -1,6 +1,6 @@
 import {FilterValues, Task, Todolist} from "./App.tsx";
 import {Button} from "./Button.tsx";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent} from "react";
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";
 
@@ -13,6 +13,7 @@ type Props = {
     createTask: (todolistId:string, title: string) => void
     changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
     deleteTodolist: (todolistId: string) => void
+    changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
 }
 
 export const TodolistItem = (props: Props) => {
@@ -27,7 +28,8 @@ export const TodolistItem = (props: Props) => {
         changeFilter,
         createTask,
         changeTaskStatus,
-        deleteTodolist
+        deleteTodolist,
+        changeTaskTitle
     } = props
 
 
@@ -66,10 +68,14 @@ export const TodolistItem = (props: Props) => {
                             changeTaskStatus(id, task.id, newStatusValue)
                         }
 
+                        const changeTaskTitleHandler = (title: string) => {
+                            changeTaskTitle(id, task.id, title)
+                        }
+
                         return (
                             <li key={task.id} className={task.isDone ? "is-done" : ""}>
                                 <input type="checkbox" checked={task.isDone} onChange={changeTaskStatusHandler}/>
-                                <EditableSpan value={task.title} />
+                                <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
                                 <Button title={"x"} onClick={deleteTaskHandler}/>
                             </li>
                         )
