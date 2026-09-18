@@ -4,6 +4,7 @@ import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";
 import {Box, Button, Checkbox, IconButton, List, ListItem} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {getListItemSx} from './TodolistItem.styles'
 
 type Props = {
     todolist: Todolist;
@@ -84,7 +85,7 @@ export const TodolistItem = (props: Props) => {
                         }
 
                         return (
-                            <ListItem key={task.id} sx={{p: 0, justifyContent: 'space-between', opacity: task.isDone ? 0.5 : 1}}>
+                            <ListItem key={task.id} sx={getListItemSx(task.isDone)}>
                                 <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler}/>
                                 <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
                                 <IconButton onClick={deleteTaskHandler}>

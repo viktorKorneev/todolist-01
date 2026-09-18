@@ -5,7 +5,8 @@ import {v1} from "uuid";
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu'
-
+import {containerSx} from './TodolistItem.styles'
+import {NavButton} from "./NavButton.ts";
 
 // ------------------------- Тип задачи
 export type Task = {
@@ -182,16 +183,15 @@ export const App = () => {
                 {/*<CssBaseline />*/}
                 <AppBar position="static" sx={{ mb: '30px' }}>
                     <Toolbar>
-                        <Container maxWidth={'lg'} >
+                        <Container maxWidth={'lg'} sx={containerSx}>
                             <IconButton color="inherit">
                                 <MenuIcon/>
                             </IconButton>
-                            {/*<div>*/}
-                            {/*    <NavButton>Sign in</NavButton>*/}
-                            {/*    <NavButton>Sign up</NavButton>*/}
-                            {/*    <NavButton background={theme.palette.primary.dark}>Faq</NavButton>*/}
-                            {/*    <Switch color={'default'} onChange={changeMode} />*/}
-                            {/*</div>*/}
+                            <div>
+                                <NavButton color="inherit">Sign in</NavButton>
+                                <NavButton color="inherit">Sign up</NavButton>
+                                <NavButton background={'dodgerblue'} color="inherit">Faq</NavButton>
+                            </div>
                         </Container>
                     </Toolbar>
                 </AppBar>
