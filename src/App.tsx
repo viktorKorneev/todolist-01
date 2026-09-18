@@ -3,10 +3,15 @@ import {TodolistItem} from "./TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 import {CreateItemForm} from "./CreateItemForm.tsx";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
+import {AppBar, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu'
 import {containerSx} from './TodolistItem.styles'
 import {NavButton} from "./NavButton.ts";
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Switch from '@mui/material/Switch'
+import CssBaseline from '@mui/material/CssBaseline'
+
+type ThemeMode = 'dark' | 'light'
 
 // ------------------------- Тип задачи
 export type Task = {
@@ -70,6 +75,22 @@ export const App = () => {
             ]
         }
     )
+
+
+
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
+    const theme = createTheme({
+        palette: {
+            mode: themeMode,
+            primary: {
+                main: '#087EA4',
+            },
+        },
+    })
+    const changeMode = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
 
     // ------------------------------❗Delete-Task ---------------------------
 
@@ -178,9 +199,9 @@ export const App = () => {
 
 
     return (
-        // <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
             <div className={'app'}>
-                {/*<CssBaseline />*/}
+                <CssBaseline />
                 <AppBar position="static" sx={{ mb: '30px' }}>
                     <Toolbar>
                         <Container maxWidth={'lg'} sx={containerSx}>
@@ -190,7 +211,8 @@ export const App = () => {
                             <div>
                                 <NavButton color="inherit">Sign in</NavButton>
                                 <NavButton color="inherit">Sign up</NavButton>
-                                <NavButton background={'dodgerblue'} color="inherit">Faq</NavButton>
+                                <NavButton background={theme.palette.primary.dark} color="inherit">Faq</NavButton>
+                                <Switch color={'default'} onChange={changeMode} />
                             </div>
                         </Container>
                     </Toolbar>
@@ -229,7 +251,7 @@ export const App = () => {
                     </Grid>
                 </Container>
             </div>
-        // </ThemeProvider>
+         </ThemeProvider>
     )
 }
 
