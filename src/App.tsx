@@ -180,7 +180,7 @@ export const App = () => {
         // <ThemeProvider theme={theme}>
             <div className={'app'}>
                 {/*<CssBaseline />*/}
-                <AppBar position="static">
+                <AppBar position="static" sx={{ mb: '30px' }}>
                     <Toolbar>
                         <Container maxWidth={'lg'} >
                             <IconButton color="inherit">
