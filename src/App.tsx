@@ -1,6 +1,6 @@
 import './App.css'
 import {TodolistItem} from "./TodolistItem.tsx";
-import {useState} from "react";
+import {useReducer, useState} from "react";
 import {v1} from "uuid";
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
@@ -10,6 +10,7 @@ import {NavButton} from "./NavButton.ts";
 import {createTheme, ThemeProvider} from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
+import {changeTodolistTitleAC, createTodolistAC, todolistsReducer} from "./model/todolists-reducer.ts";
 
 type ThemeMode = 'dark' | 'light'
 
@@ -46,10 +47,7 @@ export const App = () => {
 
     // ---------------------- Список тудулистов
     // Храним массив тудулистов, каждый со своим id, названием и фильтром
-    const [todolists, setTodolist] = useState<Todolist[]>([
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
-    ])
+    const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [])
 
     // ---------------------- Текущий фильтр
     // Значения фильтра каждого тудулиста теперь хранятся в самих объектах, поэтому нужно удалить state для значения фильтра:
@@ -58,23 +56,7 @@ export const App = () => {
 
     // ---------------------- Список задач
     // tasks — объект, где ключ = id тудулиста, значение = массив его задач
-    const [tasks, setTasks] = useState<TasksState>({
-            [todolistId1]: [
-                {id: v1(), title: "HTML&CSS", isDone: true},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "Redux", isDone: false},
-                {id: v1(), title: "Typescript", isDone: false},
-                {id: v1(), title: "RTK query", isDone: false},
-            ],
-            [todolistId2]: [
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "Redux", isDone: false},
-                {id: v1(), title: "Typescript", isDone: false},
-                {id: v1(), title: "RTK query", isDone: false},
-            ]
-        }
-    )
+    const [tasks, setTasks] = useState<TasksState>({})
 
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
@@ -142,10 +124,9 @@ export const App = () => {
 
     // -------------------------------❗Create-TodoList ------------------------------------------
     const createTodolist = (title: string) => {
-        const todolistId = v1()
-        const newTodolist: Todolist = {id: todolistId, title: title, filter: "all"}
-        setTodolist([newTodolist, ...todolists])
-        setTasks({...tasks, [todolistId]: []})
+        const action = createTodolistAC(title)
+        dispatchToTodolists(action)
+        setTasks({...tasks, [action.payload.id]: []})
     }
 
 
@@ -193,7 +174,7 @@ export const App = () => {
     // -------------------------------❗Change-Todolist-Title -------------------------------------
 
     const changeTodolistTitle = (todolistId: string, title: string) => {
-        setTodolist(todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl))
+        dispatchToTodolists(changeTodolistTitleAC({id: todolistId, title}))
     }
 
 

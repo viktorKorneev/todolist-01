@@ -1,6 +1,6 @@
 import {FilterValues, Todolist} from "../App.tsx";
 import {v1} from "uuid";
-import {ac} from "vitest/dist/chunks/reporters.D7Jzd9GS";
+
 
 
 const initialState: Todolist[] = []
@@ -12,11 +12,11 @@ const initialState: Todolist[] = []
 //     }
 // }
 
-export type Actions = DeleteTodolistAction | CreateTodolistAction | ChangeTodolistTitleAction | ChangeTodolistFilterAcrion
+export type Actions = DeleteTodolistAction | CreateTodolistAction | ChangeTodolistTitleAction | ChangeTodolistFilterAction
 export type DeleteTodolistAction = ReturnType<typeof deleteTodolistAC>
 export type CreateTodolistAction = ReturnType<typeof createTodolistAC>
 export type ChangeTodolistTitleAction = ReturnType<typeof changeTodolistTitleAC>
-export type ChangeTodolistFilterAcrion = ReturnType<typeof changeTodolistFilterAC>
+export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterAC>
 // const action = {
 //     type: "todos/todoAdded",
 //     payload: {
