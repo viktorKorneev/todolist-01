@@ -3,11 +3,11 @@ import {TodolistItem} from "./TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 import {CreateItemForm} from "./CreateItemForm.tsx";
-import {AppBar, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu'
 import {containerSx} from './TodolistItem.styles'
 import {NavButton} from "./NavButton.ts";
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import {createTheme, ThemeProvider} from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 
@@ -75,7 +75,6 @@ export const App = () => {
             ]
         }
     )
-
 
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
@@ -201,18 +200,19 @@ export const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className={'app'}>
-                <CssBaseline />
-                <AppBar position="static" sx={{ mb: '30px' }}>
+                <CssBaseline/>
+                <AppBar position="static" sx={{mb: '30px'}}>
                     <Toolbar>
                         <Container maxWidth={'lg'} sx={containerSx}>
-                            <IconButton color="inherit">
-                                <MenuIcon/>
-                            </IconButton>
+                                <IconButton color="inherit">
+                                    <MenuIcon/>
+                                </IconButton>
+                                <Button color={"inherit"}>Sign in</Button>
                             <div>
                                 <NavButton color="inherit">Sign in</NavButton>
                                 <NavButton color="inherit">Sign up</NavButton>
                                 <NavButton background={theme.palette.primary.dark} color="inherit">Faq</NavButton>
-                                <Switch color={'default'} onChange={changeMode} />
+                                <Switch color={'default'} onChange={changeMode}/>
                             </div>
                         </Container>
                     </Toolbar>
@@ -251,7 +251,7 @@ export const App = () => {
                     </Grid>
                 </Container>
             </div>
-         </ThemeProvider>
+        </ThemeProvider>
     )
 }
 
