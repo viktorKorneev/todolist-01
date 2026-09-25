@@ -15,28 +15,38 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
             return newState;
         }
         case "delete_task": {
+            const {todolistId, taskId} = action.payload;
             const newState = {
                 ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].filter(ts => ts.id !== action.payload.taskId)
+                [todolistId]: state[todolistId].filter(ts => ts.id !== taskId)
             };
             return newState;
         }
         case "create_task": {
-            const newTask = {id: v1(), title: action.payload.title, isDone: false};
+            const {todolistId, title} = action.payload;
+            const newTask = {id: v1(), title, isDone: false};
             const newTasks = {
                 ...state,
-                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+                [todolistId]: [newTask, ...state[todolistId]]
             }
             return newTasks
+        }
+        case "change_task_status": {
+            const {todolistId, taskId, isDone} = action.payload;
+            return {
+                ...state,
+                [todolistId]: state[todolistId].map(t => t.id === taskId ? {...t, isDone} : t),
+            }
         }
         default:
             return state
     }
 }
 
-type Actions = CreateTodolistAction | DeleteTodolistAction | DeleteTaskAction | CreateTaskAction
+type Actions = CreateTodolistAction | DeleteTodolistAction | DeleteTaskAction | CreateTaskAction | ChangeTaskStatus
 type DeleteTaskAction = ReturnType<typeof deleteTaskAC>
 type CreateTaskAction = ReturnType<typeof createTaskAC>
+type ChangeTaskStatus = ReturnType<typeof changeTaskStatusAC>
 
 
 export const deleteTaskAC = ({todolistId, taskId}: { todolistId: string, taskId: string }) => {
@@ -45,4 +55,12 @@ export const deleteTaskAC = ({todolistId, taskId}: { todolistId: string, taskId:
 
 export const createTaskAC = ({todolistId, title}: { todolistId: string, title: string }) => {
     return {type: "create_task", payload: {todolistId, title}} as const
+}
+
+export const changeTaskStatusAC = ({todolistId, taskId, isDone}: {
+    todolistId: string,
+    taskId: string,
+    isDone: boolean
+}) => {
+    return {type: "change_task_status", payload: {todolistId, taskId, isDone}} as const
 }
