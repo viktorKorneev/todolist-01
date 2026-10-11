@@ -1,7 +1,7 @@
 import {TasksState} from "../app/App.tsx";
 import {createTodolistAC, CreateTodolistAction, deleteTodolistAC, DeleteTodolistAction} from "./todolists-reducer.ts";
 import {v1} from "uuid";
-import {createReducer, nanoid} from "@reduxjs/toolkit";
+import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
 
 const initialState: TasksState = {}
 
@@ -58,29 +58,40 @@ type ChangeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>
 type ChangeTaskTitleAction = ReturnType<typeof changeTaskTitleAC>
 
 
-export const deleteTaskAC = ({todolistId, taskId}: { todolistId: string, taskId: string }) => {
-    return {type: "delete_task", payload: {todolistId, taskId}} as const
-}
+export const deleteTaskAC = createAction<{todolistId: string, taskId: string}>("tasks/deleteTask")
 
-export const createTaskAC = ({todolistId, title}: { todolistId: string, title: string }) => {
-    return {type: "create_task", payload: {todolistId, title}} as const
-}
+    // ({todolistId, taskId}: { todolistId: string, taskId: string }) => {
+    //     return {type: "delete_task", payload: {todolistId, taskId}} as const
+    // }
 
-export const changeTaskStatusAC = ({todolistId, taskId, isDone}: {
-    todolistId: string,
-    taskId: string,
-    isDone: boolean
-}) => {
-    return {type: "change_task_status", payload: {todolistId, taskId, isDone}} as const
-}
+export const createTaskAC = createAction("tasks/createTask", (title: string) => {
+    return {payload: {title, id: nanoid(), isDone: false}}
+})
 
-export const changeTaskTitleAC = ({todolistId, taskId, title}: {
-    todolistId: string,
-    taskId: string,
-    title: string
-}) => {
-    return {type: "change_task_title", payload: {todolistId, taskId, title}} as const
-}
+    // ({todolistId, title}: { todolistId: string, title: string }) => {
+    //     return {type: "create_task", payload: {todolistId, title}} as const
+    // }
+
+export const changeTaskStatusAC = createAction<{todolistId: string, taskId: string, isDone: boolean}>("tasks/changeTaskStatus")
+
+
+// ({todolistId, taskId, isDone}: {
+    //     todolistId: string,
+    //     taskId: string,
+    //     isDone: boolean
+    // }) => {
+    //     return {type: "change_task_status", payload: {todolistId, taskId, isDone}} as const
+    // }
+
+export const changeTaskTitleAC = createAction<{todolistId: string, taskId: string, title: string}>("tasks/changeTaskTitle")
+
+    // ({todolistId, taskId, title}: {
+    //     todolistId: string,
+    //     taskId: string,
+    //     title: string
+    // }) => {
+    //     return {type: "change_task_title", payload: {todolistId, taskId, title}} as const
+    // }
 
 export const tasksReducer = createReducer(initialState, builder => {
     builder
