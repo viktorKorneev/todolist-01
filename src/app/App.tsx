@@ -26,6 +26,8 @@ import {
 import {RootState} from "./store.ts";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
+import {selectTodolists} from "../model/todolists-selectors.ts";
+import {selectTasks} from "../model/tasks-selectors.ts";
 
 
 type ThemeMode = 'dark' | 'light'
@@ -57,8 +59,8 @@ export type FilterValues = "all" | "active" | "completed"
 
 
 export const App = () => {
-    const todolists = useAppSelector<RootState, Todolist[]>(state => state.todolists)
-    const tasks = useAppSelector<RootState, TasksState>(state => state.tasks)
+    const todolists = useAppSelector<RootState, Todolist[]>(selectTodolists)
+    const tasks = useAppSelector<RootState, TasksState>(selectTasks)
     const dispatch = useAppDispatch()
 
     // ---------------------- Список тудулистов
