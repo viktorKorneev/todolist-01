@@ -23,8 +23,9 @@ import {
     deleteTaskAC,
     // tasksReducer
 } from "../model/tasks-reducer.ts";
-import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store.ts";
+import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
+import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 
 
 type ThemeMode = 'dark' | 'light'
@@ -56,9 +57,9 @@ export type FilterValues = "all" | "active" | "completed"
 
 
 export const App = () => {
-    const todolists = useSelector<RootState, Todolist[]>(state => state.todolists)
-    const tasks = useSelector<RootState, TasksState>(state => state.tasks)
-    const dispatch = useDispatch()
+    const todolists = useAppSelector<RootState, Todolist[]>(state => state.todolists)
+    const tasks = useAppSelector<RootState, TasksState>(state => state.tasks)
+    const dispatch = useAppDispatch()
 
     // ---------------------- Список тудулистов
     // Храним массив тудулистов, каждый со своим id, названием и фильтром
