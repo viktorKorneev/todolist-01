@@ -1,7 +1,7 @@
 import {TasksState} from "../app/App.tsx";
-import {CreateTodolistAction, DeleteTodolistAction} from "./todolists-reducer.ts";
+import {createTodolistAC, CreateTodolistAction, deleteTodolistAC, DeleteTodolistAction} from "./todolists-reducer.ts";
 import {v1} from "uuid";
-import {nanoid} from "@reduxjs/toolkit";
+import {createReducer, nanoid} from "@reduxjs/toolkit";
 
 const initialState: TasksState = {}
 
@@ -81,3 +81,14 @@ export const changeTaskTitleAC = ({todolistId, taskId, title}: {
 }) => {
     return {type: "change_task_title", payload: {todolistId, taskId, title}} as const
 }
+
+export const tasksReducer = createReducer(initialState, builder => {
+    builder
+        .addCase(createTodolistAC, (state, action) => {
+            state[action.payload.id] = []
+        })
+        .addCase(deleteTodolistAC, (state, action) => {
+            delete state[action.payload.id];
+        })
+        .addCase()
+})

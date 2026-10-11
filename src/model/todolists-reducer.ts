@@ -12,11 +12,11 @@ const initialState: Todolist[] = []
 //     }
 // }
 
-export type Actions = DeleteTodolistAction | CreateTodolistAction | ChangeTodolistTitleAction | ChangeTodolistFilterAction
+export type Actions = DeleteTodolistAction | CreateTodolistAction
 export type DeleteTodolistAction = ReturnType<typeof deleteTodolistAC>
 export type CreateTodolistAction = ReturnType<typeof createTodolistAC>
-export type ChangeTodolistTitleAction = ReturnType<typeof changeTodolistTitleAC>
-export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterAC>
+// export type ChangeTodolistTitleAction = ReturnType<typeof changeTodolistTitleAC>
+// export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterAC>
 // const action = {
 //     type: "todos/todoAdded",
 //     payload: {
@@ -24,25 +24,25 @@ export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterA
 //     },
 // }
 
-export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
-    switch (action.type) {
-        case 'todolists/deleteTodolist' : {
-            return state.filter(todolist => todolist.id !== action.payload.id)
-        }
-        case 'todolists/createTodolist': {
-            const newTodolist: Todolist = {id: action.payload.id, title: action.payload.title, filter: "all"}
-            return [...state, newTodolist]
-        }
-        case 'todolists/changeTodolistTitle': {
-            return state.map(tl => tl.id === action.payload.id ? {...tl, title: action.payload.title} : tl)
-        }
-        case 'todolists/changeTodolistFilter': {
-            return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.filter} : tl)
-        }
-        default:
-            return state
-    }
-}
+// export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
+//     switch (action.type) {
+//         case 'todolists/deleteTodolist' : {
+//             return state.filter(todolist => todolist.id !== action.payload.id)
+//         }
+//         case 'todolists/createTodolist': {
+//             const newTodolist: Todolist = {id: action.payload.id, title: action.payload.title, filter: "all"}
+//             return [...state, newTodolist]
+//         }
+//         case 'todolists/changeTodolistTitle': {
+//             return state.map(tl => tl.id === action.payload.id ? {...tl, title: action.payload.title} : tl)
+//         }
+//         case 'todolists/changeTodolistFilter': {
+//             return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.filter} : tl)
+//         }
+//         default:
+//             return state
+//     }
+// }
 
 export const deleteTodolistAC = createAction<{id: string}>('todolists/deleteTodolist')
 
@@ -54,12 +54,27 @@ export const changeTodolistTitleAC = createAction<{id: string, title: string}>('
 
 export const changeTodolistFilterAC = createAction<{todolistId: string, filter: FilterValues}>('todolists/changeTodolistFilter')
 
-const todolistReducer = createReducer(initialState, builder => {
+export const todolistsReducer = createReducer(initialState, builder => {
     builder
         .addCase(deleteTodolistAC, (state, action) => {
             const index = state.findIndex(todolist => todolist.id === action.payload.id)
             if (index !== -1) {
                 state.splice(index, 1)
+            }
+        })
+        .addCase(createTodolistAC, (state, action) => {
+            state.push({ ...action.payload, filter: "all" })
+        })
+        .addCase(changeTodolistTitleAC, (state, action) => {
+            const index = state.findIndex(todolist => todolist.id === action.payload.id)
+            if (index !== -1) {
+                state[index].title = action.payload.title
+            }
+        })
+        .addCase(changeTodolistFilterAC, (state, action) => {
+            const todolist = state.find(todolist => todolist.id === action.payload.todolistId)
+            if (todolist) {
+                todolist.filter = action.payload.filter
             }
         })
 })
