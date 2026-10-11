@@ -1,6 +1,7 @@
 import {TasksState} from "../app/App.tsx";
 import {CreateTodolistAction, DeleteTodolistAction} from "./todolists-reducer.ts";
 import {v1} from "uuid";
+import {nanoid} from "@reduxjs/toolkit";
 
 const initialState: TasksState = {}
 
@@ -24,7 +25,7 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
         }
         case "create_task": {
             const {todolistId, title} = action.payload;
-            const newTask = {id: v1(), title, isDone: false};
+            const newTask = {id: nanoid(), title, isDone: false};
             const newTasks = {
                 ...state,
                 [todolistId]: [newTask, ...state[todolistId]]

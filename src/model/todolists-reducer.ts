@@ -1,5 +1,5 @@
 import {FilterValues, Todolist} from "../app/App.tsx";
-import {v1} from "uuid";
+import {createAction, nanoid} from "@reduxjs/toolkit";
 
 
 
@@ -44,13 +44,11 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
     }
 }
 
-export const deleteTodolistAC = (id: string) => {
-    return {type: "delete_todolist", payload: {id}}as const
-}
+export const deleteTodolistAC = createAction<{id: string}>("todolists/deleteTodolist")
 
-export const createTodolistAC = (title:string) => {
-    return {type: "create_todolist", payload: {id:v1(), title}} as const
-}
+export const createTodolistAC = createAction("todolists/crateTodolist", (title: string) => {
+    return {payload: {title, id: nanoid()}}
+})
 
 export const changeTodolistTitleAC = ({id, title}:{id: string, title: string}) => {
     return {type: "change_todolist_title", payload: {id, title}} as const
