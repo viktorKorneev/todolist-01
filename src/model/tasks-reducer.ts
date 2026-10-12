@@ -67,11 +67,7 @@ export const createTaskAC = createAction("tasks/createTask", ({todolistId, title
 // ({todolistId, title}: { todolistId: string, title: string }) => {
 //     return {type: "create_task", payload: {todolistId, title}} as const
 // }
-export const changeTaskStatusAC = createAction<{
-    todolistId: string,
-    taskId: string,
-    isDone: boolean
-}>("tasks/changeTaskStatus")
+export const changeTaskStatusAC = createAction<{ todolistId: string, taskId: string, isDone: boolean }>("tasks/changeTaskStatus")
 // ({todolistId, taskId, isDone}: {
 //     todolistId: string,
 //     taskId: string,
@@ -114,5 +110,17 @@ export const tasksReducer = createReducer(initialState, (builder) => {
                 title,
                 isDone: false,
             });
+        })
+        .addCase(changeTaskStatusAC, (state, action) => {
+            const task = state[action.payload.todolistId].find(task => task.id === action.payload.taskId)
+            if (task) {
+                task.isDone = action.payload.isDone
+            }
+        })
+        .addCase(changeTaskTitleAC, (state, action) => {
+            const task = state[action.payload.todolistId].find(task => task.id === action.payload.taskId)
+            if (task) {
+                task.title = action.payload.title
+            }
         })
 })
