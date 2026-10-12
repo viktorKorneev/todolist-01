@@ -23,7 +23,6 @@ import {
     deleteTaskAC,
     // tasksReducer
 } from "../model/tasks-reducer.ts";
-import {RootState} from "./store.ts";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 import {selectTodolists} from "../model/todolists-selectors.ts";
@@ -59,8 +58,9 @@ export type FilterValues = "all" | "active" | "completed"
 
 
 export const App = () => {
-    const todolists = useAppSelector<RootState, Todolist[]>(selectTodolists)
-    const tasks = useAppSelector<RootState, TasksState>(selectTasks)
+    const todolists = useAppSelector(selectTodolists)
+    const tasks = useAppSelector(selectTasks)
+
     const dispatch = useAppDispatch()
 
     // ---------------------- Список тудулистов
@@ -101,8 +101,7 @@ export const App = () => {
     // }
 
     const deleteTask = (todolistId: string, taskId: string) => {
-        const action = deleteTaskAC({todolistId, taskId})
-        dispatch(action)
+        dispatch(deleteTaskAC({todolistId, taskId}))
     }
 
     // ------------------------------❗Delete-Todolist ---------------------------
@@ -117,22 +116,19 @@ export const App = () => {
     // -------------
 
     const deleteTodolist = (todolistId: string) => {
-        const action = deleteTodolistAC({id: todolistId})
-        dispatch(action)
+        dispatch(deleteTodolistAC({id: todolistId}))
     }
 
 
     // ------------------------------❗Change-Filter ---------------------------
 
     const changeFilter = (todolistId: string, filter: FilterValues) => {
-        const action = changeTodolistFilterAC({todolistId, filter})
-        dispatch(action)
+        dispatch(changeTodolistFilterAC({todolistId, filter}))
     }
 
     // -------------------------------❗Create-TodoList ------------------------------------------
     const createTodolist = (title: string) => {
-        const action = createTodolistAC(title)
-        dispatch(action)
+        dispatch(createTodolistAC(title))
     }
 
 
@@ -145,15 +141,13 @@ export const App = () => {
     // }
 
     const createTask = (todolistId: string, title: string) => {
-        const action = createTaskAC({todolistId, title})
-        dispatch(action)
+        dispatch(createTaskAC({todolistId, title}))
     }
 
 
     // -------------------------------❗Change-Task-Status -------------------------------------
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        const action = changeTaskStatusAC({todolistId, taskId, isDone})
-        dispatch(action)
+        dispatch(changeTaskStatusAC({todolistId, taskId, isDone}))
     }
 
     // const changeTaskStatus = (taskId: string, isDone: boolean) => {
@@ -168,8 +162,7 @@ export const App = () => {
 
     // -------------------------------❗Change-Task-Title -------------------------------------
     const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        const action = changeTaskTitleAC({todolistId, taskId, title})
-        dispatch(action)
+        dispatch(changeTaskTitleAC({todolistId, taskId, title}))
     }
     // -------------------------------❗Change-Todolist-Title -------------------------------------
 
