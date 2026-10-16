@@ -1,26 +1,20 @@
 import './App.css'
 import {TodolistItem} from "../TodolistItem.tsx";
 import {CreateItemForm} from "../CreateItemForm.tsx";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu'
-import {containerSx} from '../TodolistItem.styles.ts'
-import {NavButton} from "../NavButton.ts";
+import {Container, Grid, Paper} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles'
-import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     createTodolistAC,
     deleteTodolistAC,
-    // todolistsReducer
 } from "../model/todolists-reducer.ts";
 import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     createTaskAC,
     deleteTaskAC,
-    // tasksReducer
 } from "../model/tasks-reducer.ts";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
@@ -29,6 +23,7 @@ import {selectTasks} from "../model/tasks-selectors.ts";
 import {selectThemeMode} from "./app-selectors.ts";
 import {changeThemeModeAC} from "./app-reducer.ts";
 import {getTheme} from "../common/theme/theme.ts";
+import {Header} from "@/common/components/Header/Header.tsx";
 
 
 // ------------------------- Тип задачи
@@ -167,22 +162,7 @@ export const App = () => {
         <ThemeProvider theme={theme}>
             <div className={'app'}>
                 <CssBaseline/>
-                <AppBar position="static" sx={{mb: '30px'}}>
-                    <Toolbar>
-                        <Container maxWidth={'lg'} sx={containerSx}>
-                                <IconButton color="inherit">
-                                    <MenuIcon/>
-                                </IconButton>
-                                <Button color={"inherit"}>Sign in</Button>
-                            <div>
-                                <NavButton color="inherit">Sign in</NavButton>
-                                <NavButton color="inherit">Sign up</NavButton>
-                                <NavButton background={theme.palette.primary.dark} color="inherit">Faq</NavButton>
-                                <Switch color={'default'} onChange={changeMode}/>
-                            </div>
-                        </Container>
-                    </Toolbar>
-                </AppBar>
+                <Header/>
                 <Container maxWidth={'lg'}>
                     <Grid container sx={{mb: '30px'}}>
                         <CreateItemForm onCreateItem={createTodolist}/>
