@@ -1,12 +1,11 @@
 import './App.css'
 import {TodolistItem} from "../TodolistItem.tsx";
-import {useState} from "react";
 import {CreateItemForm} from "../CreateItemForm.tsx";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu'
 import {containerSx} from '../TodolistItem.styles.ts'
 import {NavButton} from "../NavButton.ts";
-import {createTheme, ThemeProvider} from '@mui/material/styles'
+import {ThemeProvider} from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {
@@ -27,9 +26,10 @@ import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 import {selectTodolists} from "../model/todolists-selectors.ts";
 import {selectTasks} from "../model/tasks-selectors.ts";
+import {selectThemeMode} from "./app-selectors.ts";
+import {changeThemeModeAC} from "./app-reducer.ts";
+import {getTheme} from "../common/theme/theme.ts";
 
-
-type ThemeMode = 'dark' | 'light'
 
 // ------------------------- Тип задачи
 export type Task = {
@@ -60,6 +60,7 @@ export type FilterValues = "all" | "active" | "completed"
 export const App = () => {
     const todolists = useAppSelector(selectTodolists)
     const tasks = useAppSelector(selectTasks)
+    const themeMode = useAppSelector(selectThemeMode)
 
     const dispatch = useAppDispatch()
 
@@ -76,19 +77,10 @@ export const App = () => {
     // tasks — объект, где ключ = id тудулиста, значение = массив его задач
     // const [tasks, dispatchToTasks] = useReducer(tasksReducer, {})
 
+    const theme = getTheme(themeMode)
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
-
-    const theme = createTheme({
-        palette: {
-            mode: themeMode,
-            primary: {
-                main: '#087EA4',
-            },
-        },
-    })
     const changeMode = () => {
-        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+        dispatch(changeThemeModeAC({themeMode: themeMode === 'light' ? 'dark' : 'light'}))
     }
 
     // ------------------------------❗Delete-Task ---------------------------
