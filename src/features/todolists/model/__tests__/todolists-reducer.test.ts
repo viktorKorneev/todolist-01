@@ -1,11 +1,11 @@
-import {Todolist} from "../app/App.tsx";
+import {Todolist} from "../../../../app/App.tsx";
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     createTodolistAC,
     deleteTodolistAC,
     todolistsReducer
-} from "./todolists-reducer.ts";
+} from "../todolists-reducer.ts";
 import {expect, test, beforeEach} from "vitest";
 import {nanoid} from "@reduxjs/toolkit";
 
