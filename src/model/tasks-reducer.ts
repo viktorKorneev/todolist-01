@@ -1,6 +1,21 @@
-import {TasksState} from "../app/App.tsx";
 import {createTodolistAC, deleteTodolistAC} from "./todolists-reducer.ts";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
+
+// ------------------------- Тип задачи
+export type Task = {
+    id: string
+    title: string
+    isDone: boolean
+}
+
+// ------------------------- Тип для state
+export type TasksState = Record<string, Task[]>
+//❗ Record<string, Task[]> — объект-словарь, где ключ — строковый id тудулиста,
+// а значение — массив его задач (Task[])
+// export type TasksState = {
+//     [key: string]: Task[]
+// }
+// ----------------
 
 const initialState: TasksState = {}
 //

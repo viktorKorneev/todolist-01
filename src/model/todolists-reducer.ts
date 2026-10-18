@@ -1,5 +1,14 @@
-import {FilterValues, Todolist} from "../app/App.tsx";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
+
+// ------------------------- Тип тудулиста
+export type Todolist = {
+    id: string
+    title: string
+    filter: FilterValues
+}
+
+// ------------------------- Тип фильтра
+export type FilterValues = "all" | "active" | "completed"
 
 // export type DeleteTodolistAction = {
 //     type: "delete_todolist",
