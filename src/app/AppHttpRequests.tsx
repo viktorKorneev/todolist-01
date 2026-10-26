@@ -22,13 +22,14 @@ export const AppHttpRequests = () => {
     }, [])
 
     const createTodolist = (title: string) => {
-        axios.post<any>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title}, {
+        axios.post<CreateTodolistResponse>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title}, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "API-KEY": apiKey
             }
         }).then((res) => {
-            //
+            console.log(res)
+            setTodolists([res.data.data.item, ...todolists])
         })
     }
 
@@ -85,4 +86,16 @@ export type Todolist = {
     title: string
     addedDate: string
     order: number
+}
+
+export type FieldError = {
+    error: string
+    field: string
+}
+
+type CreateTodolistResponse = {
+    data: { item: Todolist }
+    resultCode: number
+    messages: string[]
+    fieldsErrors: FieldError[]
 }
