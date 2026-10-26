@@ -5,22 +5,32 @@ import {EditableSpan} from '@/common/components/EditableSpan/EditableSpan'
 import axios from "axios";
 
 const token = "ce2a389c-959e-4f19-a632-2c55ee336c57"
+const apiKey = "7bfe4383-41a9-4115-811b-1d150babe2b6"
 
 export const AppHttpRequests = () => {
-    const [todolists, setTodolists] = useState<any>([])
+    const [todolists, setTodolists] = useState<Todolist[]>([])
     const [tasks, setTasks] = useState<any>({})
 
     useEffect(() => {
-        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', {
+        axios.get<Todolist[]>('https://social-network.samuraijs.com/api/1.1/todo-lists', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then((res) => {
-            console.log(res)
+            console.log(res.data)
         })
     }, [])
 
-    const createTodolist = (title: string) => {}
+    const createTodolist = (title: string) => {
+        axios.post<any>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "API-KEY": apiKey
+            }
+        }).then((res) => {
+            //
+        })
+    }
 
     const deleteTodolist = (id: string) => {}
 
@@ -68,4 +78,11 @@ const container: CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column',
+}
+
+export type Todolist = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
 }
