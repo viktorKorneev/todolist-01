@@ -1,8 +1,8 @@
 import {type ChangeEvent, type CSSProperties, useEffect, useState} from 'react'
 import Checkbox from '@mui/material/Checkbox'
-import {CreateItemForm} from '@/common/components/CreateItemForm/CreateItemForm'
-import {EditableSpan} from '@/common/components/EditableSpan/EditableSpan'
+import {CreateItemForm, EditableSpan} from '@/common/components'
 import axios from "axios";
+import {BaseResponse} from "@/common/types";
 
 const token = "ce2a389c-959e-4f19-a632-2c55ee336c57"
 const apiKey = "7bfe4383-41a9-4115-811b-1d150babe2b6"
@@ -109,15 +109,5 @@ export type Todolist = {
     order: number
 }
 
-export type FieldError = {
-    error: string
-    field: string
-}
 
-type BaseResponse<T = {}> = {
-    data: T
-    resultCode: number
-    messages: string[]
-    fieldsErrors: FieldError[]
-}
 
