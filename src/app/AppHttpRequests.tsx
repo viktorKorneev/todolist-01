@@ -22,28 +22,49 @@ export const AppHttpRequests = () => {
     }, [])
 
     const createTodolist = (title: string) => {
-        axios.post<CreateTodolistResponse>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title}, {
+        axios.post<BaseResponse<{ item: Todolist }>>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title}, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "API-KEY": apiKey
             }
         }).then((res) => {
-            console.log(res)
             setTodolists([res.data.data.item, ...todolists])
         })
     }
 
-    const deleteTodolist = (id: string) => {}
+    const deleteTodolist = (id: string) => {
+        axios.delete<BaseResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "API-KEY": apiKey
+            }
+        }).then(() => {
+            setTodolists(todolists.filter((todolist) => todolist.id !== id))
+        })
+    }
 
-    const changeTodolistTitle = (id: string, title: string) => {}
+    const changeTodolistTitle = (id: string, title: string) => {
+        axios.put<BaseResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, {title}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "API-KEY": apiKey
+            }
+        }).then(() => {
+            setTodolists(todolists.map((todolist) => todolist.id === id ? {...todolist, title} : todolist))
+        })
+    }
 
-    const createTask = (todolistId: string, title: string) => {}
+    const createTask = (todolistId: string, title: string) => {
+    }
 
-    const deleteTask = (todolistId: string, taskId: string) => {}
+    const deleteTask = (todolistId: string, taskId: string) => {
+    }
 
-    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>, task: any) => {}
+    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>, task: any) => {
+    }
 
-    const changeTaskTitle = (task: any, title: string) => {}
+    const changeTaskTitle = (task: any, title: string) => {
+    }
 
     return (
         <div style={{margin: '20px'}}>
@@ -93,9 +114,10 @@ export type FieldError = {
     field: string
 }
 
-type CreateTodolistResponse = {
-    data: { item: Todolist }
+type BaseResponse<T = {}> = {
+    data: T
     resultCode: number
     messages: string[]
     fieldsErrors: FieldError[]
 }
+
