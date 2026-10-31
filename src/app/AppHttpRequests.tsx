@@ -1,8 +1,6 @@
 import {type ChangeEvent, type CSSProperties, useEffect, useState} from 'react'
 import Checkbox from '@mui/material/Checkbox'
 import {CreateItemForm, EditableSpan} from '@/common/components'
-import {BaseResponse} from "@/common/types";
-import {instance} from "@/common/instance/instance.ts";
 import type {Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
 import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 

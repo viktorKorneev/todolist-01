@@ -1,4 +1,4 @@
-import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
+import {useAppDispatch} from "@/common/hooks";
 import {changeTodolistTitleAC, deleteTodolistAC, Todolist} from "@/features/todolists/model/todolists-reducer.ts";
 import {EditableSpan} from "@/common/components/EditableSpan/EditableSpan.tsx";
 import {IconButton} from "@mui/material";
