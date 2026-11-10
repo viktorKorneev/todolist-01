@@ -3,13 +3,25 @@ import Checkbox from "@mui/material/Checkbox"
 import { CreateItemForm, EditableSpan } from "@/common/components"
 import type { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
+import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
+import type { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
-  const [tasks, setTasks] = useState<any>({})
+  const [tasks, setTasks] = useState<Record<string, DomainTask[]>>({})
 
   useEffect(() => {
-    todolistsApi.getTodolists().then((res) => setTodolists(res.data.data))
+    todolistsApi.getTodolists().then((res) => {
+      const todolists = res.data.data
+      setTodolists(todolists)
+      todolists.forEach((todolist) => {
+        tasksApi.getTasks(todolist.id).then((res) => {
+          const newTasks = res.data.data
+          setTasks({ ...tasks, [todolist.id]: newTasks })
+        })
+      })
+    })
   }, [])
 
   const createTodolist = (title: string) => {
@@ -25,12 +37,16 @@ export const AppHttpRequests = () => {
   }
 
   const changeTodolistTitle = (id: string, title: string) => {
-    todolistsApi.changeTodolistTitle(id, title).then(() => {
-      setTodolists(todolists.map((todolist) => (todolist.id === id ? { ...todolist, title } : todolist)))
+    todolistsApi.changeTodolistTitle(id, title).then((res) => {
+      setTodolists(todolists.map((todolist) => (todolist.id === id ? res.data.data : todolist)))
     })
   }
 
-  const createTask = (todolistId: string, title: string) => {}
+  const createTask = (todolistId: string, title: string) => {
+    tasksApi.createTask({ todolistId, title }).then((res) => {
+      setTasks({ ...tasks, [todolistId]: [res.data.data, ...tasks[todolistId]] })
+    })
+  }
 
   const deleteTask = (todolistId: string, taskId: string) => {}
 
@@ -51,10 +67,13 @@ export const AppHttpRequests = () => {
             <button onClick={() => deleteTodolist(todolist.id)}>x</button>
           </div>
           <CreateItemForm onCreateItem={(title) => createTask(todolist.id, title)} />
-          {tasks[todolist.id]?.map((task: any) => (
+          {tasks[todolist.id]?.map((task) => (
             <div key={task.id}>
-              <Checkbox checked={task.isDone} onChange={(e) => changeTaskStatus(e, task)} />
-              <EditableSpan value={task.title} onChange={(title) => changeTaskTitle(task, title)} />
+              <Checkbox
+                checked={task.attributes.status === TaskStatus.Completed}
+                onChange={(e) => changeTaskStatus(e, task)}
+              />
+              <EditableSpan value={task.attributes.title} onChange={(title) => changeTaskTitle(task, title)} />
               <button onClick={() => deleteTask(todolist.id, task.id)}>x</button>
             </div>
           ))}
