@@ -14,7 +14,7 @@ export const AppHttpRequests = () => {
 
   const createTodolist = (title: string) => {
     todolistsApi.createTodolist(title).then((res) => {
-      setTodolists([res.data.data.item, ...todolists])
+      setTodolists([res.data.data, ...todolists])
     })
   }
 

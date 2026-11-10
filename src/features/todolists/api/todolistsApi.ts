@@ -1,9 +1,11 @@
 import { instance } from "@/common/instance"
 import type {
   CreateTodolistRequest,
+  CreateTodolistResponse,
   GetTodolistsResponse,
   Todolist,
   UpdateTodolistRequest,
+  UpdateTodolistResponse,
 } from "@/features/todolists/api/todolistsApi.types.ts"
 import { BaseResponse } from "@/common/types"
 
@@ -26,7 +28,7 @@ export const todolistsApi = {
       },
     }
 
-    return instance.put<BaseResponse>(`/boards/${id}`, payload)
+    return instance.put<UpdateTodolistResponse>(`/boards/${id}`, payload)
   },
   // createTodolist(title: string) {
   //   return instance.post<BaseResponse<{ item: Todolist }>>("/boards", { title, description: '' })
@@ -42,9 +44,9 @@ export const todolistsApi = {
       },
     }
 
-    return instance.post<BaseResponse<{ item: Todolist }>>("/boards", payload)
+    return instance.post<CreateTodolistResponse>("/boards", payload)
   },
   deleteTodolist(id: string) {
-    return instance.delete<BaseResponse>(`/todo-lists/${id}`)
+    return instance.delete(`/boards/${id}`)
   },
 }
