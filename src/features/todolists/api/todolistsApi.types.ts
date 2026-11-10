@@ -1,8 +1,7 @@
 export type Todolist = {
   id: string
-  type: string
+  type: "boards"
   attributes: {
-    id: string
     title: string
     description: string
     addedAt: string
@@ -10,11 +9,42 @@ export type Todolist = {
     order: number
     isImportant: boolean
     images: {
-      main: (string | null)[]
+      main: {
+        type: "original"
+        width: number
+        height: number
+        fileSize: number
+        url: string
+      }[]
     }
   }
 }
 
 export type GetTodolistsResponse = {
-  data: [Todolist]
+  data: Todolist[]
+}
+
+// export type CreateTodolistResponse = {
+//   data: Todolist[]
+// }
+
+export type CreateTodolistRequest = {
+  data: {
+    type: "boards"
+    attributes: {
+      title: string
+      description?: string
+    }
+  }
+}
+
+export type UpdateTodolistRequest = {
+  data: {
+    type: "boards"
+    attributes: {
+      title: string
+      description: string
+      isImportant: boolean
+    }
+  }
 }

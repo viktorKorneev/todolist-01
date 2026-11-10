@@ -1,16 +1,48 @@
 import { instance } from "@/common/instance"
-import type { GetTodolistsResponse, Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
+import type {
+  CreateTodolistRequest,
+  GetTodolistsResponse,
+  Todolist,
+  UpdateTodolistRequest,
+} from "@/features/todolists/api/todolistsApi.types.ts"
 import { BaseResponse } from "@/common/types"
 
 export const todolistsApi = {
   getTodolists() {
-    return instance.get<GetTodolistsResponse[]>("/boards/my")
+    return instance.get<GetTodolistsResponse>("/boards/my")
   },
-  createTodolist(title: string) {
-    return instance.post<BaseResponse<{ item: Todolist }>>("/todo-lists", { title })
-  },
+  // changeTodolistTitle(id: string, title: string) {
+  //   return instance.put<BaseResponse>(`/boards/${id}`, { title, isImportant: false })
+  // },
   changeTodolistTitle(id: string, title: string) {
-    return instance.put<BaseResponse>(`/todo-lists/${id}`, { title })
+    const payload: UpdateTodolistRequest = {
+      data: {
+        type: "boards",
+        attributes: {
+          title,
+          description: "",
+          isImportant: false,
+        },
+      },
+    }
+
+    return instance.put<BaseResponse>(`/boards/${id}`, payload)
+  },
+  // createTodolist(title: string) {
+  //   return instance.post<BaseResponse<{ item: Todolist }>>("/boards", { title, description: '' })
+  // },
+  createTodolist(title: string, description?: string) {
+    const payload: CreateTodolistRequest = {
+      data: {
+        type: "boards",
+        attributes: {
+          title,
+          description,
+        },
+      },
+    }
+
+    return instance.post<BaseResponse<{ item: Todolist }>>("/boards", payload)
   },
   deleteTodolist(id: string) {
     return instance.delete<BaseResponse>(`/todo-lists/${id}`)

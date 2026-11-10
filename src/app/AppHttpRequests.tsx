@@ -44,7 +44,10 @@ export const AppHttpRequests = () => {
       {todolists.map((todolist: any) => (
         <div key={todolist.id} style={container}>
           <div>
-            <EditableSpan value={todolist.title} onChange={(title) => changeTodolistTitle(todolist.id, title)} />
+            <EditableSpan
+              value={todolist.attributes.title}
+              onChange={(title) => changeTodolistTitle(todolist.id, title)}
+            />
             <button onClick={() => deleteTodolist(todolist.id)}>x</button>
           </div>
           <CreateItemForm onCreateItem={(title) => createTask(todolist.id, title)} />
