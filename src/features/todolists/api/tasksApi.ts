@@ -1,5 +1,4 @@
 import { instance } from "@/common/instance"
-import type { UpdateTodolistRequest } from "@/features/todolists/api/todolistsApi.types.ts"
 import type { BaseResponse } from "@/common/types"
 import type {
   CreateTaskModel,
@@ -21,7 +20,8 @@ export const tasksApi = {
     const { todolistId, model } = payload
     return instance.post<BaseResponse<DomainTask>>(`/boards/${todolistId}/tasks`, model)
   },
-  deleteTask(id: string) {
-    return instance.delete(`/boards/${id}`)
+  deleteTask(payload: { todolistId: string; taskId: string }) {
+    const { todolistId, taskId } = payload
+    return instance.delete(`/boards/${todolistId}/tasks/${taskId}`)
   },
 }
