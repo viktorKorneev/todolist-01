@@ -4,8 +4,8 @@ import { CreateItemForm, EditableSpan } from "@/common/components"
 import type { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
-import type { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
-import { TaskPriority, TaskStatus } from "@/common/enums/enums.ts"
+import type { DomainTask, UpdateTaskModel, UpdateTaskTitleModel } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
@@ -18,7 +18,7 @@ export const AppHttpRequests = () => {
       todolists.forEach((todolist) => {
         tasksApi.getTasks(todolist.id).then((res) => {
           const newTasks = res.data.data
-          setTasks({ ...tasks, [todolist.id]: newTasks })
+          setTasks((prevTasks) => ({ ...prevTasks, [todolist.id]: newTasks }))
         })
       })
     })
@@ -57,6 +57,9 @@ export const AppHttpRequests = () => {
         },
       })
       .then((res) => {
+        console.log("tasks:", tasks)
+        console.log("todolistId:", todolistId)
+        console.log("tasks[todolistId]:", tasks[todolistId])
         setTasks({ ...tasks, [todolistId]: [res.data.data, ...tasks[todolistId]] })
       })
   }
@@ -87,7 +90,20 @@ export const AppHttpRequests = () => {
     })
   }
 
-  const changeTaskTitle = (task: any, title: string) => {}
+  const changeTaskTitle = (todolistId: string, taskId: string, newTitle: string) => {
+    const model: UpdateTaskTitleModel = {
+      data: {
+        type: "tasks",
+        attributes: {
+          title: newTitle,
+        },
+      },
+    }
+
+    tasksApi.changeTaskTitle({ todolistId, taskId, model }).then((res) => {
+      setTasks({ ...tasks, [todolistId]: tasks[todolistId].map((el) => (el.id === taskId ? res.data.data : el)) })
+    })
+  }
 
   return (
     <div style={{ margin: "20px" }}>
@@ -108,7 +124,10 @@ export const AppHttpRequests = () => {
                 checked={task.attributes.status === TaskStatus.Completed}
                 onChange={(e) => changeTaskStatus(e, todolist.id, task)}
               />
-              <EditableSpan value={task.attributes.title} onChange={(title) => changeTaskTitle(task, title)} />
+              <EditableSpan
+                value={task.attributes.title}
+                onChange={(title) => changeTaskTitle(todolist.id, task.id, title)}
+              />
               <button onClick={() => deleteTask(todolist.id, task.id)}>x</button>
             </div>
           ))}

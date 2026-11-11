@@ -5,6 +5,7 @@ import type {
   DomainTask,
   GetTasksResponse,
   UpdateTaskModel,
+  UpdateTaskTitleModel,
 } from "@/features/todolists/api/tasksApi.types.ts"
 
 export const tasksApi = {
@@ -16,6 +17,11 @@ export const tasksApi = {
 
     return instance.put<BaseResponse<DomainTask>>(`/boards/${todolistId}/tasks/${taskId}`, model)
   },
+  changeTaskTitle(payload: { todolistId: string; taskId: string; model: UpdateTaskTitleModel }) {
+    const { todolistId, taskId, model } = payload
+
+    return instance.patch<BaseResponse<DomainTask>>(`/boards/${todolistId}/tasks/${taskId}`, model)
+  },
   createTask(payload: { todolistId: string; title: string; model: CreateTaskModel }) {
     const { todolistId, model } = payload
     return instance.post<BaseResponse<DomainTask>>(`/boards/${todolistId}/tasks`, model)
@@ -25,3 +31,11 @@ export const tasksApi = {
     return instance.delete(`/boards/${todolistId}/tasks/${taskId}`)
   },
 }
+// const payload: UpdateTaskTitleModel = {
+//   data: {
+//     type: "tasks",
+//     attributes: {
+//       title,
+//     },
+//   },
+// }

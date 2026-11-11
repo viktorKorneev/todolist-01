@@ -92,3 +92,12 @@ export type UpdateTaskModel = {
     }
   }
 }
+
+export type UpdateTaskTitleModel = {
+  data: {
+    type: "tasks"
+    attributes: {
+      title: string
+    }
+  }
+}
