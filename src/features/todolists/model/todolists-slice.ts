@@ -64,6 +64,9 @@ export type FilterValues = "all" | "active" | "completed"
 export const todolistsSlice = createSlice({
   name: "todolists",
   initialState: [] as Todolist[],
+  selectors: {
+    selectTodolists: (state) => state,
+  },
   reducers: (create) => ({
     deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
       const index = state.findIndex((todolist) => todolist.id === action.payload.id)
@@ -92,6 +95,7 @@ export const todolistsSlice = createSlice({
   }),
 })
 
+export const { selectTodolists } = todolistsSlice.selectors
 export const { deleteTodolistAC, changeTodolistTitleAC, changeTodolistFilterAC, createTodolistAC } =
   todolistsSlice.actions
 export const todolistsReducer = todolistsSlice.reducer
