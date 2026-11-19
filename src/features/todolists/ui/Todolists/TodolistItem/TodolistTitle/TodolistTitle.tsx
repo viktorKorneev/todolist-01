@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/common/hooks"
 import {
-  changeTodolistTitleAC,
+  changeTodolistTitleTC,
   deleteTodolistAC,
   type DomainTodolist,
 } from "@/features/todolists/model/todolists-slice.ts"
@@ -23,7 +23,7 @@ export const TodolistTitle = ({ todolist }: Props) => {
   }
 
   const changeTodolistTitleHandler = (title: string) => {
-    dispatch(changeTodolistTitleAC({ id, title }))
+    dispatch(changeTodolistTitleTC({ id, title }))
   }
 
   return (
