@@ -1,7 +1,6 @@
-import { selectThemeMode } from "@/app/app-selectors.ts"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { getTheme } from "@/common/theme"
-import { changeThemeModeAC } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectThemeMode } from "@/app/app-slice.ts"
 import { AppBar, Button, Container, IconButton, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { NavButton } from "@/common/components/NavButton/NavButton.ts"

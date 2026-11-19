@@ -5,6 +5,9 @@ export const appSlice = createSlice({
   initialState: {
     themeMode: "light" as ThemeMode,
   },
+  selectors: {
+    selectThemeMode: (state) => state.themeMode,
+  },
   // reducers состоит из подредьюсеров, эквивалентных одному оператору case в switch
   reducers: (create) => ({
     changeThemeModeAC: create.reducer<{ themeMode: ThemeMode }>((state, action) => {
@@ -13,6 +16,8 @@ export const appSlice = createSlice({
     }),
   }),
 })
+
+export const { selectThemeMode } = appSlice.selectors
 
 // action creator достается из appSlice.actions
 export const { changeThemeModeAC } = appSlice.actions
