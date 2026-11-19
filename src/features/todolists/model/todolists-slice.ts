@@ -1,5 +1,6 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit"
 import type { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
+import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 // import type { ThemeMode } from "@/app/app-slice.ts"
 
 // ------------------------- Тип тудулиста
@@ -101,6 +102,15 @@ export const todolistsSlice = createSlice({
       },
     ),
   }),
+})
+
+export const fetchTodolistsTC = createAsyncThunk(`${todolistsSlice.name}/fetchTodolistsTC`, async (_, { dispatch }) => {
+  try {
+    const todolists = await todolistsApi.getTodolists()
+    dispatch(setTodolistsAC({ todolists }))
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 export const { selectTodolists } = todolistsSlice.selectors
