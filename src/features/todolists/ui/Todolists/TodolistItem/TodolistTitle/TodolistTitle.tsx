@@ -1,12 +1,16 @@
 import { useAppDispatch } from "@/common/hooks"
-import { changeTodolistTitleAC, deleteTodolistAC, Todolist } from "@/features/todolists/model/todolists-slice.ts"
+import {
+  changeTodolistTitleAC,
+  deleteTodolistAC,
+  type DomainTodolist,
+} from "@/features/todolists/model/todolists-slice.ts"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import { IconButton } from "@mui/material"
 import { Delete } from "@mui/icons-material"
 import styles from "./TodolistTitle.module.css"
 
 type Props = {
-  todolist: Todolist
+  todolist: DomainTodolist
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
